@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Fiesta de Cumpleaños</title>
+    <!-- Librería de Confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --btn-color: #22c55e;
+            --btn-hover: #16a34a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .banner {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        p {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .map-btn {
+            display: block;
+            text-align: center;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: background 0.3s;
+        }
+
+        .map-btn:hover {
+            background-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Estilos del Temporizador */
+        .countdown-container {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .countdown-title {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .countdown-box {
+            background-color: #1e293b;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .countdown-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .countdown-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Itinerario */
+        .itinerary {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #334155;
+        }
+
+        .itinerary h3 {
+            margin-top: 0;
+            font-size: 0.95rem;
+            color: var(--accent-color);
+        }
+
+        .itinerary ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .itinerary li {
+            margin-bottom: 6px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 6px;
+        }
+
+        /* Formulario */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            color: var(--text-color);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        button[type="submit"] {
+            background-color: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--btn-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Imagen de la invitación -->
+        <img src="chica.jpg" alt="Fiesta de Cumpleaños" class="banner">
+
+        <div class="content">
+            <h1>Mi Fiesta de Cumpleaños</h1>
+            <p>¡Se armó la carnita asada / pachanga! Habrá buena música, ambiente y cotorreo para celebrar un año más de vida. ¡No faltes!</p>
+
+            <!-- Botón de Google Maps -->
+            <a href="Https://maps.app.goo.gl/M4gCpeugKvFZ3Mtg8?g_st=ic" target="_blank" class="map-btn">
+                📍 Ubicación: Ver ubicación exacta en Google Maps
+            </a>
+
+            <!-- Temporizador -->
+            <div class="countdown-container">
+                <div class="countdown-title">FALTAN PARA EL PACHANGÓN:</div>
+                <div class="countdown-grid">
+                    <div class="countdown-box">
+                        <div id="days" class="countdown-number">00</div>
+                        <div class="countdown-label">Días</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div id="hours" class="countdown-number">00</div>
+                        <div class="countdown-label">Hrs</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div id="minutes" class="countdown-number">00</div>
+                        <div class="countdown-label">Min</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div id="seconds" class="countdown-number">00</div>
+                        <div class="countdown-label">Seg</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Itinerario -->
+            <div class="itinerary">
+                <h3>🕒 ITINERARIO</h3>
+                <ul>
+                    <li><strong>20:00 hrs</strong> - Llegada y abrazos</li>
+                    <li><strong>21:00 hrs</strong> - ¡A darle a la carnita asada!</li>
+                    <li><strong>22:30 hrs</strong> - Música, baile y cotorreo</li>
+                </ul>
+            </div>
+
+            <div class="section-title">CONFIRMA SI VAS A CAER</div>
+            
+            <!-- Formulario de RSVP -->
+            <form id="form-asistencia">
+                <div>
+                    <label for="nombre">Tu nombre</label>
+                    <input type="text" id="nombre" required placeholder="Escribe tu nombre completo">
+                </div>
+
+                <div>
+                    <label for="asistencia">¿Sí vas a armarla?</label>
+                    <select id="asistencia" required>
+                        <option value="Sí, ahí estaré">Sí, ahí estaré 🍻</option>
+                        <option value="No podré ir">No podré ir 😢</option>
+                    </select>
+                </div>
+
+                <button type="submit">Confirmar Asistencia</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Lógica del Temporizador (Pon la fecha de tu fiesta aquí: Año, Mes [0-11], Día, Hora)
+        const eventDate = new Date(2026, 9, 31, 20, 0, 0).getTime();
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.querySelector(".countdown-container").innerHTML = "<div class='countdown-title'>¡LA FIESTA HA COMENZADO! 🎉</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+        // Lógica del Formulario y Conexión a Google Sheets
+        document.getElementById("form-asistencia").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const datos = {
+                nombre: document.getElementById("nombre").value,
+                asistencia: document.getElementById("asistencia").value
+            };
+
+            // PEGA AQUÍ TU URL LARGA DE GOOGLE APPS SCRIPT ENTRE LAS COMILLAS
+            const urlScript = "https://script.google.com/macros/s/AKfycbws0Tz7hStQVBtza3iep6Gq8sMSbp3Igtz3r0cKRXbxpmu7R0MxG-rzW0wBk6t46Dzy/exec";
+
+            fetch(urlScript, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(() => {
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.8 }
+                });
+                alert("¡Gracias por confirmar! Tus datos se guardaron en la lista 🍻");
+                document.getElementById("form-asistencia").reset();
+            })
+            .catch(error => {
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.8 }
+                });
+                alert("¡Gracias por confirmar! Nos vemos en el pachangón");
+            });
+        });
+    </script>
+</body>
+</html>
